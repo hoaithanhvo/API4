@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using WebAPI.Models;
@@ -30,6 +31,7 @@ namespace WebAPI.Controllers
 
 
         [HttpGet("{id}")]
+        [Authorize]
         public IActionResult getById(int id)
             {
             try
@@ -75,8 +77,6 @@ namespace WebAPI.Controllers
                 return BadRequest();
                 }
             }
-
-
         }
     }
     

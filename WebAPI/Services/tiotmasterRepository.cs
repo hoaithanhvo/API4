@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc.ViewFeatures;
+﻿    using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,14 +10,13 @@ namespace WebAPI.Services
     {
     public class tiotmasterRepository : ITiotmasterRepository
         {
-        private readonly NIDEC_IOTContext _context;
+        private readonly NIDEC_IOT_TESTContext _context;
         public static int PAGESIZE {get;set;} =15;
 
-        public tiotmasterRepository(NIDEC_IOTContext context)
+        public tiotmasterRepository(NIDEC_IOT_TESTContext context)
             {
             _context = context;
             }
-
         public ITiotmasterView Create(ITiotmasterView Item)
             {
             var item = new TIotMoldMaster
@@ -69,7 +68,6 @@ namespace WebAPI.Services
                 _context.SaveChanges(true);
                 }
             }
-
         public ITiotmasterView GetById(int id)
             {
             var checkItem = _context.TIotMoldMasters.SingleOrDefault(hh => hh.Id == id);
@@ -135,11 +133,13 @@ namespace WebAPI.Services
                 }
             #endregion
 
+            var result = PaginatedList<TIotMoldMaster>.Create(list, page, PAGESIZE);
+
             #region Pageing
-            
-            list = list.Skip((page - 1) * PAGESIZE).Take(PAGESIZE);
+
+            //list = list.Skip((page - 1) * PAGESIZE).Take(PAGESIZE);
             #endregion
-            var result = list.Select(hh => new ITiotmasterView
+            return result.Select(hh => new ITiotmasterView
                 {
                 CavQty = hh.CavQty,
                 StackQty = hh.StackQty,
@@ -155,8 +155,8 @@ namespace WebAPI.Services
                 ReycleRatio = hh.ReycleRatio,
                 ScrapQty = hh.ScrapQty,
                 ScrapShot = hh.ScrapShot,
-                });
-            return result.ToList();
+                }).ToList();
+            //return result.ToList();
             }
 
         public void Update(ITiotmaster Item, int id)
